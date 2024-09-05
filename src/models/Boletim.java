@@ -5,9 +5,13 @@ import java.util.List;
 
 public class Boletim {
     private int codigoBoletim;
-    private List<Float> notas;
+    private int matricula;
+    private float nota1;
+    private float nota2;
+    private float nota3;
+    private float nota4;
     private int quantFaltas;
-    private boolean aprovado;
+    private String situacao;
 
     public int getCodigoBoletim() {return codigoBoletim;}
 
@@ -15,12 +19,44 @@ public class Boletim {
         this.codigoBoletim = codigoBoletim;
     }
 
-    public List<Float> getNotas() {
-        return this.notas;
+    public int getMatricula() {
+        return matricula;
     }
 
-    public void setNotas(List<Float> notas) {
-        this.notas = notas;
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
+    }
+
+    public float getNota1() {
+        return nota1;
+    }
+
+    public void setNota1(float nota1) {
+        this.nota1 = nota1;
+    }
+
+    public float getNota2() {
+        return nota2;
+    }
+
+    public void setNota2(float nota2) {
+        this.nota2 = nota2;
+    }
+
+    public float getNota3() {
+        return nota3;
+    }
+
+    public void setNota3(float nota3) {
+        this.nota3 = nota3;
+    }
+
+    public float getNota4() {
+        return nota4;
+    }
+
+    public void setNota4(float nota4) {
+        this.nota4 = nota4;
     }
 
     public int getQuantFaltas() {
@@ -31,12 +67,12 @@ public class Boletim {
         this.quantFaltas = quantFaltas;
     }
 
-    public boolean getAprovado() {
-        return this.aprovado;
+    public String getSituacao() {
+        return this.situacao;
     }
 
-    public void setAprovado(boolean aprovado) {
-        this.aprovado = aprovado;
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
     }
 
 }

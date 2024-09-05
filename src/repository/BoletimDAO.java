@@ -15,14 +15,14 @@ import java.util.logging.Logger;
 
 public class BoletimDAO {
 
-    private Connection connection;
+    private final Connection connection;
 
     public BoletimDAO() {
         this.connection = new ConnectDAO().connectDB();
     }
 
     public List<Boletim> listar() {
-        String sql = "SELECT * FROM boletims";
+        String sql = "SELECT * FROM boletins";
         List<Boletim> retorno = new ArrayList<>();
 
         try {
@@ -32,27 +32,58 @@ public class BoletimDAO {
             while (resultado.next()) {
                 Boletim boletim  = new Boletim();
                 boletim.setCodigoBoletim(resultado.getInt("codigo_boletim"));
+                boletim.setMatricula(resultado.getInt("matricula"));
+                boletim.setNota1(resultado.getFloat("nota_1"));
+                boletim.setNota2(resultado.getFloat("nota_2"));
+                boletim.setNota3(resultado.getFloat("nota_3"));
+                boletim.setNota4(resultado.getFloat("nota_4"));
                 boletim.setQuantFaltas(resultado.getInt("quantidade_faltas"));
-                boletim.setAprovado(resultado.getBoolean("aprovado"));
-
-                sql = "SELECT valor FROM notas WHERE codigo_boletim=?";
-                stmt = connection.prepareStatement(sql);
-                stmt.setInt(1, boletim.getCodigoBoletim());
-                ResultSet resultadoNotas = stmt.executeQuery();
-
-                List<Float> notas = new ArrayList<>();
-                while (resultadoNotas.next()) {
-                    notas.add(resultadoNotas.getFloat("valor"));
-                }
-
-                boletim.setNotas(notas);
-
+                boletim.setSituacao(resultado.getString("situacao"));
                 retorno.add(boletim);
             }
         } catch (SQLException err) {
             Logger.getLogger(BoletimDAO.class.getName()).log(Level.SEVERE, null, err);
         }
+
         return retorno;
+    }
+
+    public boolean inserir(Boletim boletim) {
+        try {
+            String sql = "SELECT matricula FROM alunos WHERE matricula=?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, boletim.getMatricula());
+            ResultSet aluno = stmt.executeQuery();
+
+            if (!aluno.next()) {
+                System.out.println("Esse aluno não existe, por favor insira um aluno válido!");
+                return false;
+            }
+
+            sql = "INSERT INTO (matricula, nota_1, nota_2, nota_3, nota_4, quantidade_faltas)" +
+                    " VALUES (?, ?, ?, ?, ?, ?)";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, boletim.getMatricula());
+            stmt.setFloat(2, boletim.getNota1());
+            stmt.setFloat(3, boletim.getNota2());
+            stmt.setFloat(4, boletim.getNota3());
+            stmt.setFloat(5, boletim.getNota4());
+            stmt.setInt(6, boletim.getQuantFaltas());
+
+            float media = (boletim.getNota1() + boletim.getNota2() + boletim.getNota3() + boletim.getNota4()) / 4;
+
+            if (media >= 7 && boletim.getQuantFaltas() < 15) {
+                stmt.setString(7, "Aprovado");
+            } else {
+                stmt.setString(7, "Reprovado");
+            }
+
+            stmt.execute();
+            return true;
+        } catch (SQLException err) {
+            Logger.getLogger(BoletimDAO.class.getName()).log(Level.SEVERE, null, err);
+            return false;
+        }
     }
 
 }

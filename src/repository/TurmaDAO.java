@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class TurmaDAO {
 
-    private Connection connection;
+    private final Connection connection;
 
     public TurmaDAO () {
         this.connection = new ConnectDAO().connectDB();

@@ -45,25 +45,17 @@ public class ConnectDAO {
             sql = "CREATE TABLE IF NOT EXISTS boletins (" +
                     "codigo_boletim INTEGER NOT NULL AUTO_INCREMENT, " +
                     "matricula INTEGER NOT NULL, " +
-                    "nota_1 FLOAT NOT NULL, " +
-                    "nota_2 FLOAT NOT NULL, " +
-                    "nota_3 FLOAT NOT NULL, " +
-                    "nota_4 FLOAT NOT NULL, " +
+                    "nota_1 FLOAT NOT NULL ," +
+                    "nota_2 FLOAT NOT NULL ," +
+                    "nota_3 FLOAT NOT NULL ," +
+                    "nota_4 FLOAT NOT NULL ," +
                     "quantidade_faltas INTEGER NOT NULL, " +
-                    "aprovado BOOLEAN NOT NULL, " +
+                    "situacao VARCHAR(9) NOT NULL, " +
                     "PRIMARY KEY (codigo_boletim), " +
                     "FOREIGN KEY (matricula) REFERENCES alunos(matricula))";
             stmt.executeUpdate(sql);
 
-            sql = "CREATE TABLE IF NOT EXISTS notas (" +
-                    "codigo_nota INTEGER NOT NULL AUTO_INCREMENT," +
-                    "codigo_boletim INTEGER NOT NULL," +
-                    "valor FLOAT NOT NULL," +
-                    "PRIMARY KEY (codigo_nota)," +
-                    "FOREIGN KEY (codigo_boletim) REFERENCES boletins(codigo_boletim))";
-            stmt.executeUpdate(sql);
 
-            System.out.println("Database and tables created successfully");
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(null, "ConnectDAO: " + err.getMessage());
         }

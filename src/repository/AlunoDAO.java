@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AlunoDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public AlunoDAO () {
         this.connection = new ConnectDAO().connectDB();
